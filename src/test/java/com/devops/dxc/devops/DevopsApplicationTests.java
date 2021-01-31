@@ -73,6 +73,23 @@ class DevopsApplicationTests {
 		assertEquals(0, saldo);
 		return;
 	}
+
+	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, paga Impuesto ")
+	@CsvSource({
+			"6000000, 2500000"
+	})
+	public void PagaImpuesoCaso1() {
+
+		Dxc res = new Dxc(6000000, 2500000);
+		int mi10 = res.getDxc();
+		
+		
+		int imp = res.getImpuesto();
+
+		System.out.println("impuesto=" + imp);
+		assertTrue("Error en Impuesto", imp > 0);
+		return;
+	}
 	
 
 }
