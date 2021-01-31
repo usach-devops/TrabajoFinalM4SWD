@@ -24,19 +24,28 @@ public class Dxc implements Serializable{
 	}
 
 	public int getDxc() {
-		return Util.getDxc(ahorro,sueldo);
+		int diez = 0;
+		diez = Util.getDxc(ahorro);
+		setDxc(diez);
+		return this.dxc;
 	}
 	public void setDxc(int dxc) {
 		this.dxc = dxc;
 	}
 	public int getSaldo() {
-		return saldo;
+		int s = 0;
+		s = Util.getSaldo(ahorro, dxc);
+		setSaldo(s);
+		return this.saldo;		
 	}
 	public void setSaldo(int saldo) {
 		this.saldo = saldo;
 	}
 	public int getImpuesto() {
-		return impuesto;
+		int i = 0;
+		i = Util.getImpuesto(sueldo, dxc);
+		setImpuesto(i);
+		return this.impuesto;
 	}
 	public void setImpuesto(int impuesto) {
 		this.impuesto = impuesto;
