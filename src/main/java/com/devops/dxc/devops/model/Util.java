@@ -42,23 +42,34 @@ public class Util {
 
     public static int getImpuesto(int sueldo, int dxc)
     {
-        int SueldoAnual = sueldo * 12;
+        //int SueldoAnual = sueldo * 12;
         int retorno = 0;
         
-        if (SueldoAnual > 17864280 && SueldoAnual <=29773800)
+        //Se modifica formula con monto de sueldo ingresarlo a matriz de impuesto segun web https://www.chileatiende.gob.cl/fichas/81027-retiros-del-10-de-los-fondos-de-afp
+        
+        if (sueldo < 1500000)
+        	retorno = (int)(0*dxc);
+        
+        if (sueldo >= 1500000 && sueldo <= 1530000) 
+            retorno = (int)(0.04*dxc);
+        
+        if (sueldo >= 1530000 && sueldo <=2550000)
             retorno = (int)(0.08*dxc);
-
-        if (SueldoAnual > 29773800 && SueldoAnual <=41600000)
+        
+        if (sueldo >= 2550000 && sueldo <=3570000)
             retorno = (int)(0.135*dxc);
 
-        if (SueldoAnual > 41600000 && SueldoAnual <=53500000)
+        if (sueldo >= 3570000 && sueldo <=4590000)
             retorno = (int)(0.23*dxc);
 
-        if (SueldoAnual > 53500000 && SueldoAnual <=71400000)
-            retorno =  (int)(0.304*dxc);
+        if (sueldo >= 4590000 && sueldo <=6120000)
+            retorno = (int)(0.304*dxc);
 
-        if (SueldoAnual > 71400000)
+        if (sueldo >= 6120000 && sueldo <=15818000)
             retorno =  (int)(0.35*dxc);
+
+        if (sueldo > 15818000)
+            retorno =  (int)(0.4*dxc);
 
         return retorno;
 
