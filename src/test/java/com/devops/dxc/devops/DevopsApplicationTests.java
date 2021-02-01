@@ -25,7 +25,13 @@ class DevopsApplicationTests {
 
 	 @ParameterizedTest(name = "ahorro = {0} tiene fondos ")
 	 @CsvSource({
-			 "5000000"
+			 "", 
+			 "0",
+			 "999999",
+			 "1100000",
+			 "5000000",
+			 "44000000",
+			 "50000000"
 	 })
 	 
 	 void PoseeFondo(int ahorro) {
@@ -35,7 +41,13 @@ class DevopsApplicationTests {
 
 	 @ParameterizedTest(name = "ahorro = {0} , sueldo {1}, retiro saldo ")
 	 @CsvSource({
-			 "900000, 1000000"
+		" , ",	
+		"0, 0",
+		"900000, 1000000",
+		"1100000, 1000000",
+		"5000000, 1500000",
+		"44000000, 1500000",
+		"50000000, 2500000"
 	 })
 	 public void RetirarSaldo(int ahorro,int sueldo) {
  
@@ -47,8 +59,17 @@ class DevopsApplicationTests {
 	 }
 
 	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, retiro {2} UF ")
-	@CsvSource({"5000000, 1000000, 150"})
-	
+	@CsvSource({
+		" , , ",
+		"0, 0, 0",
+		"900000, 1000000, 150",
+		"1100000, 1000000, 150",
+		"5000000, 1500000, 150",
+		"44000000, 1500000, 150",
+		"50000000, 2500000, 150",
+    "5000000, 1000000, 150"
+	})
+
 	public void Retirar150UF(int ahorro,int sueldo, int retiroUF) {
 
 		Dxc res = new Dxc(ahorro, sueldo);
@@ -61,7 +82,13 @@ class DevopsApplicationTests {
 
 	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, saldo cero ")
 	@CsvSource({
-			"900000, 1000000"
+		" , ",
+		"0, 0",	
+		"900000, 1000000",
+		"1100000, 1000000",
+		"5000000, 1500000",
+		"44000000, 1500000",
+		"50000000, 2500000"
 	})
 	public void SaldoCero(int ahorro,int sueldo) {
 
@@ -76,22 +103,31 @@ class DevopsApplicationTests {
 
 	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, paga Impuesto ")
 	@CsvSource({
+		" , ",
+		"0, 0",	
+		"900000, 1000000",
+		"1100000, 1000000",
+		"6000000, 2500000",
+		"44000000, 1500000",
+		"50000000, 2500000",
 			"50000000, 1499999",
 			"50000000, 1500000",
 			"50000000, 1530000",
 			"50000000, 1530001",
 			"50000000, 2550000",
-			
+		
 	})
 	public void PagaImpuesoCaso1(int ahorro, int sueldo) {
 
 		Dxc res = new Dxc(ahorro, sueldo);
 		int mi10 = res.getDxc();
-		
+
 		int imp = res.getImpuesto();
 
 		System.out.println("impuesto=" + imp);
 		assertTrue("Error en Impuesto", imp >=0);
 		return;
+
 	}
 }
+
