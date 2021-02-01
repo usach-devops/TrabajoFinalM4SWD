@@ -27,6 +27,7 @@ class DevopsApplicationTests {
 	 @CsvSource({
 			 "5000000"
 	 })
+	 
 	 void PoseeFondo(int ahorro) {
 		assertTrue("Error en ahorro", ahorro > 0);
 		 return;
@@ -75,18 +76,17 @@ class DevopsApplicationTests {
 
 	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, paga Impuesto ")
 	@CsvSource({
-			"1499999, 1499999"
+			"50000000, 1499999"
 	})
-	public void PagaImpuesoCaso1() {
+	public void PagaImpuesoCaso1(int ahorro, int sueldo) {
 
-		Dxc res = new Dxc(1499999, 1499999);
+		Dxc res = new Dxc(ahorro, sueldo);
 		int mi10 = res.getDxc();
-				
+		
 		int imp = res.getImpuesto();
 
 		System.out.println("impuesto=" + imp);
 		assertTrue("Error en Impuesto", imp >=0);
 		return;
 	}
-	
 }
