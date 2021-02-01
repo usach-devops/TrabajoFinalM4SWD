@@ -1,5 +1,6 @@
 package com.devops.dxc.devops;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,31 +24,60 @@ class DevopsApplicationTests {
 		 return;
 	 }
 
+	 private static boolean isNumeric(String cadena){
+		try {
+			Integer.parseInt(cadena);
+			return true;
+		} catch (NumberFormatException nfe){
+			return false;
+		}
+	}
+
+	@ParameterizedTest(name = "ahorro = {0} --> valor fondo invalido ")
+	@CsvSource({
+			"''",
+			"0"
+	})
+	void ValorFondoInvalido(String ahorro) {
+
+	   int ahorroaux =0;
+
+	   if (isNumeric(ahorro))
+		  ahorroaux = Integer.parseInt(ahorro);
+		  
+	   Dxc res = new Dxc(ahorroaux, 0);
+	   ahorroaux = res.getAhorro();
+
+	   assertTrue("Error en ahorro " + ahorroaux , ahorroaux == 0);
+		return;
+	}
+
 	 @ParameterizedTest(name = "ahorro = {0} tiene fondos ")
 	 @CsvSource({
-			 "", 
-			 "0",
 			 "999999",
 			 "1100000",
 			 "5000000",
 			 "44000000",
 			 "50000000"
 	 })
-	 
 	 void PoseeFondo(int ahorro) {
-		assertTrue("Error en ahorro", ahorro > 0);
+	   
+		Dxc res = new Dxc(ahorro, 0);
+		ahorro = res.getAhorro();
+
+		assertTrue("Error en ahorro " + ahorro , ahorro > 0);
 		 return;
 	 }
 
 	 @ParameterizedTest(name = "ahorro = {0} , sueldo {1}, retiro saldo ")
 	 @CsvSource({
-		" , ",	
-		"0, 0",
-		"900000, 1000000",
+	/*	" , ",	
+		"0, 0",*/
+		"900000, 1000000"/*,
 		"1100000, 1000000",
 		"5000000, 1500000",
 		"44000000, 1500000",
-		"50000000, 2500000"
+		"50000000, 2500000"*/
 	 })
 	 public void RetirarSaldo(int ahorro,int sueldo) {
  
@@ -60,17 +90,31 @@ class DevopsApplicationTests {
 
 	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, retiro {2} UF ")
 	@CsvSource({
-		" , , ",
-		"0, 0, 0",
+		/*" , , ",
+		"0, 0, 0",*/
 		"900000, 1000000, 150",
 		"1100000, 1000000, 150",
+	})
+	public void NoPuedeRetirar150UF(int ahorro,int sueldo, int retiroUF) {
+
+		Dxc res = new Dxc(ahorro, sueldo);
+		int mi10 = res.getDxc();
+		int esperado = retiroUF* Util.getUf();
+
+		assertNotEquals(esperado, mi10);
+		return;
+	}
+
+	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, retiro {2} UF ")
+	@CsvSource({
+		/*" , , ",
+		"0, 0, 0",*/
 		"5000000, 1500000, 150",
 		"44000000, 1500000, 150",
 		"50000000, 2500000, 150",
     "5000000, 1000000, 150"
 	})
-
-	public void Retirar150UF(int ahorro,int sueldo, int retiroUF) {
+	public void PuedeRetirar150UF(int ahorro,int sueldo, int retiroUF) {
 
 		Dxc res = new Dxc(ahorro, sueldo);
 		int mi10 = res.getDxc();
@@ -82,13 +126,9 @@ class DevopsApplicationTests {
 
 	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, saldo cero ")
 	@CsvSource({
-		" , ",
-		"0, 0",	
-		"900000, 1000000",
-		"1100000, 1000000",
-		"5000000, 1500000",
-		"44000000, 1500000",
-		"50000000, 2500000"
+		/*" , ",
+		"0, 0",	*/
+		"900000, 1000000"
 	})
 	public void SaldoCero(int ahorro,int sueldo) {
 
@@ -101,9 +141,28 @@ class DevopsApplicationTests {
 		return;
 	}
 
+	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, saldo cero ")
+	@CsvSource({
+		"1100000, 1000000",
+		"5000000, 1500000",
+		"44000000, 1500000",
+		"50000000, 2500000"
+	})
+	public void SaldoMayorACero(int ahorro,int sueldo) {
+
+		Dxc res = new Dxc(ahorro, sueldo);
+		int mi10 = res.getDxc();
+
+		int saldo = res.getSaldo();
+
+		assertTrue("Error en Saldo " + saldo , saldo > 0);
+		return;
+	}
+
+
 	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, paga Impuesto ")
 	@CsvSource({
-		" , ",
+	/*	" , ",*/
 		"0, 0",	
 		"900000, 1000000",
 		"1100000, 1000000",
