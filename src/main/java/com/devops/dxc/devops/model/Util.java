@@ -21,7 +21,7 @@ public class Util {
      * @return
      */
     public static int getDxc(int ahorro){
-        if(((ahorro)/getUf()) > 150 ){
+        if(((ahorro*0.1)/getUf()) > 150 ){
             return (int) (150*getUf()) ;
         } else if((ahorro*0.1)<=1000000 && ahorro >=1000000){
             return (int) 1000000;

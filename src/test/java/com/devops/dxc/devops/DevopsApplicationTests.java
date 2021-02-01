@@ -94,6 +94,8 @@ class DevopsApplicationTests {
 		"0, 0, 0",*/
 		"900000, 1000000, 150",
 		"1100000, 1000000, 150",
+		"5000000, 1500000, 150",
+		"5000000, 1000000, 150"
 	})
 	public void NoPuedeRetirar150UF(int ahorro,int sueldo, int retiroUF) {
 
@@ -109,10 +111,8 @@ class DevopsApplicationTests {
 	@CsvSource({
 		/*" , , ",
 		"0, 0, 0",*/
-		"5000000, 1500000, 150",
 		"44000000, 1500000, 150",
-		"50000000, 2500000, 150",
-    "5000000, 1000000, 150"
+		"50000000, 2500000, 150"
 	})
 	public void PuedeRetirar150UF(int ahorro,int sueldo, int retiroUF) {
 
