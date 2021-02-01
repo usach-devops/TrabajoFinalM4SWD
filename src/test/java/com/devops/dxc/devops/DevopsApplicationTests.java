@@ -76,7 +76,12 @@ class DevopsApplicationTests {
 
 	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, paga Impuesto ")
 	@CsvSource({
-			"50000000, 1499999"
+			"50000000, 1499999",
+			"50000000, 1500000",
+			"50000000, 1530000",
+			"50000000, 1530001",
+			"50000000, 2550000",
+			
 	})
 	public void PagaImpuesoCaso1(int ahorro, int sueldo) {
 

@@ -53,19 +53,19 @@ public class Util {
         if (sueldo >= 1500000 && sueldo <= 1530000) 
             retorno = (int)(0.04*dxc);
         
-        if (sueldo >= 1530000 && sueldo <=2550000)
+        if (sueldo > 1530000 && sueldo <=2550000)
             retorno = (int)(0.08*dxc);
         
-        if (sueldo >= 2550000 && sueldo <=3570000)
+        if (sueldo > 2550000 && sueldo <=3570000)
             retorno = (int)(0.135*dxc);
-
-        if (sueldo >= 3570000 && sueldo <=4590000)
+        
+        if (sueldo > 3570000 && sueldo <=4590000)
             retorno = (int)(0.23*dxc);
-
-        if (sueldo >= 4590000 && sueldo <=6120000)
+        
+        if (sueldo > 4590000 && sueldo <=6120000)
             retorno = (int)(0.304*dxc);
 
-        if (sueldo >= 6120000 && sueldo <=15818000)
+        if (sueldo > 6120000 && sueldo <=15818000)
             retorno =  (int)(0.35*dxc);
 
         if (sueldo > 15818000)
