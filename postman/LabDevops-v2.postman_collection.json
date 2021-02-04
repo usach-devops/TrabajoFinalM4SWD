@@ -272,7 +272,7 @@
 							"  const responseJson = pm.response.json();\r",
 							"  pm.expect(responseJson.ahorro).to.eql(5000000);\r",
 							"  valor_uf =pm.environment.get(\"_UF\");\r",
-							"  pm.expect(responseJson.dxc).to.eql(150 * valor_uf);\r",
+							"  pm.expect(responseJson.dxc).to.lessThan(150 * valor_uf);\r",
 							"});\r",
 							"\r",
 							"pm.test(\"Codigo de estado 200\", () => {\r",
