@@ -1,27 +1,28 @@
 pipeline {
-    agent any
+  agent any
 
-    stages {
-        
-            stage('Compile') {
-                steps {
-                    mvn clean compile -e
-                }
-            }
-            stage('Test') {
-                steps {
-                    mvn clean test -e
-                }
-            }
-            stage('Jar') {
-                steps {
-                    mvn clean package -e
-                }
-            }
-            stage('Run') {
-                steps {
-                    mvn spring-boot:run &
-                }
-            }
+  stages {
+
+    stage('Compile') {
+      steps {
+
+        bat 'mvn clean compile -e'
+
+      }
     }
+    stage('Test') {
+      steps {
+
+        bat 'mvn clean test -e'
+
+      }
+    }
+    stage('Jar') {
+      steps {
+        bat 'mvn clean package -e'
+
+      }
+    }
+
+  }
 }
