@@ -1,27 +1,50 @@
 pipeline {
-    agent any
+  agent any
 
-    stages {
-        
-            stage('Compile') {
-                steps {
-                    ./mvnw clean compile -e
-                }
-            }
-            stage('Test') {
-                steps {
-                    ./mvnw clean test -e
-                }
-            }
-            stage('Jar') {
-                steps {
-                    ./mvnw clean package -e
-                }
-            }
-            stage('Run') {
-                steps {
-                    ./mvnw spring-boot:run &
-                }
-            }
+  stages {
+
+    stage('Compile') {
+      steps {
+
+        bat 'mvn clean compile -e'
+
+      }
     }
+    stage('Test') {
+      steps {
+
+        bat 'mvn clean test -e'
+
+      }
+    }
+    stage('Jar') {
+      steps {
+        bat 'mvn clean package -e'
+
+      }
+    }
+
+    stage('Run') {
+      steps {
+        bat 'nohup mvn spring-boot:run &'
+
+      }
+    }
+
+    
+
+        stage('Test Postman') {
+            steps {
+                bat "newman run postman\\LabDevops-v2.postman_collection.json -e postman\\DevOpsLabUnidad4.postman_environment.json"
+            }
+        }
+    
+
+        stage('Test Load') {
+            steps {
+                bat "mvn verify -Pperformance"
+            }
+        }
+ 
+  }
 }
