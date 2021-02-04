@@ -5,22 +5,22 @@ pipeline {
         
             stage('Compile') {
                 steps {
-                    "./mvnw" clean compile -e
+                    mvn clean compile -e
                 }
             }
             stage('Test') {
                 steps {
-                    "./mvnw" clean test -e
+                    mvn clean test -e
                 }
             }
             stage('Jar') {
                 steps {
-                    "./mvnw" clean package -e
+                    mvnw clean package -e
                 }
             }
             stage('Run') {
                 steps {
-                    "./mvnw" spring-boot:run &
+                    mvnw spring-boot:run &
                 }
             }
     }
