@@ -26,7 +26,8 @@ pipeline {
 
     stage('Run') {
       steps {
-        bat 'mvn spring-boot:run &'
+        bat 'nohup start mvn spring-boot:run &'
+				sleep 20
 
       }
     }
