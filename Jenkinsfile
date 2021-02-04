@@ -26,7 +26,7 @@ pipeline {
 
         stage('Test Postman') {
             steps {
-                bat "newman run postman\LabDevops-v2.postman_collection.json -e postman\DevOpsLabUnidad4.postman_environment.json"
+                bat "newman run postman\\LabDevops-v2.postman_collection.json -e postman\\DevOpsLabUnidad4.postman_environment.json"
             }
         }
     
