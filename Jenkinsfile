@@ -24,6 +24,15 @@ pipeline {
       }
     }
 
+    stage('Run') {
+      steps {
+        bat 'mvn spring-boot:run &'
+
+      }
+    }
+
+    
+
         stage('Test Postman') {
             steps {
                 bat "newman run postman\\LabDevops-v2.postman_collection.json -e postman\\DevOpsLabUnidad4.postman_environment.json"
