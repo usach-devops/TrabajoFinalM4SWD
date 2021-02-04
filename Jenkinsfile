@@ -24,5 +24,23 @@ pipeline {
       }
     }
 
+    stages {
+        stage('Test Postman') {
+            steps {
+                bat "newman run Test-WebServices.postman_collection.json"
+            }
+        }
+    }
+
+    stages {
+        stage('Test Load') {
+            steps {
+                bat "mvn verify -Pperformance"
+            }
+        }
+    }
+
+
+
   }
 }
