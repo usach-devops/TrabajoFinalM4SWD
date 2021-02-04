@@ -100,7 +100,14 @@ public class Util {
             JSONArray serieObjectList = (JSONArray)miIndicadorObject.get("serie");
             JSONObject serieObject = (JSONObject)serieObjectList.get(0); // UF
 
-             valorUF = (int)Math.round((Double)serieObject.get("valor"));
+            if (serieObject.get("valor") instanceof Double) {
+                valorUF = (int)Math.round((Double)serieObject.get("valor"));
+            }
+            else{
+                valorUF = ((Number)serieObject.get("valor")).intValue();
+            }
+
+             
         } catch (ParseException e) {
 
             e.printStackTrace();

@@ -1,7 +1,7 @@
 package selenium;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+//import static org.junit.Assert.assertTrue;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -24,7 +24,9 @@ public class AppTest
     public void setUp(){
         System.out.println("Iniciando configuración...");
 
-        switch (Util.getOS()) {
+        
+
+        switch (selenium.Util.getOS()) {
             case WINDOWS:
                 //do windows stuff
                 System.setProperty("webdriver.chrome.driver","drivers/chromedriver.exe");

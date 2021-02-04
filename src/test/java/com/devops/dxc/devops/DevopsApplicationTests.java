@@ -1,18 +1,15 @@
 package com.devops.dxc.devops;
 
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.devops.dxc.devops.model.Dxc;
 import com.devops.dxc.devops.model.Util;
 
-import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.runners.Parameterized.Parameter;
 import org.springframework.boot.test.context.SpringBootTest;
 //import org.springframework.test.web.reactive.server.WebTestClient.ResponseSpec;
 
@@ -133,7 +130,7 @@ class DevopsApplicationTests {
 	public void SaldoCero(int ahorro,int sueldo) {
 
 		Dxc res = new Dxc(ahorro, sueldo);
-		int mi10 = res.getDxc();
+		res.getDxc();
 
 		int saldo = res.getSaldo();
 
@@ -151,7 +148,7 @@ class DevopsApplicationTests {
 	public void SaldoMayorACero(int ahorro,int sueldo) {
 
 		Dxc res = new Dxc(ahorro, sueldo);
-		int mi10 = res.getDxc();
+		res.getDxc();
 
 		int saldo = res.getSaldo();
 
@@ -179,7 +176,7 @@ class DevopsApplicationTests {
 	public void PagaImpuesoCaso1(int ahorro, int sueldo) {
 
 		Dxc res = new Dxc(ahorro, sueldo);
-		int mi10 = res.getDxc();
+		res.getDxc();
 
 		int imp = res.getImpuesto();
 
