@@ -15,12 +15,12 @@ pipeline {
             }
             stage('Jar') {
                 steps {
-                    mvnw clean package -e
+                    mvn clean package -e
                 }
             }
             stage('Run') {
                 steps {
-                    mvnw spring-boot:run &
+                    mvn spring-boot:run &
                 }
             }
     }
