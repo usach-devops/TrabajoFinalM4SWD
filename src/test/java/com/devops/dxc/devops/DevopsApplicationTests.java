@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.devops.dxc.devops.model.Dxc;
 import com.devops.dxc.devops.model.Util;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -15,9 +17,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class DevopsApplicationTests {
+	private static int valUF;
 
-	 @Test
-	 void contextLoads() {
+@BeforeAll
+	 static void contextLoads() {
+		 valUF = Util.getUf();
+		 System.out.println("Uf Obtenida=" + valUF);
 		 return;
 	 }
 
@@ -98,7 +103,7 @@ class DevopsApplicationTests {
 
 		Dxc res = new Dxc(ahorro, sueldo);
 		int mi10 = res.getDxc();
-		int esperado = retiroUF* Util.getUf();
+		int esperado = retiroUF* valUF;
 
 		assertNotEquals(esperado, mi10);
 		return;
@@ -115,7 +120,7 @@ class DevopsApplicationTests {
 
 		Dxc res = new Dxc(ahorro, sueldo);
 		int mi10 = res.getDxc();
-		int esperado = retiroUF* Util.getUf();
+		int esperado = retiroUF* valUF;
 
 		assertEquals(esperado, mi10);
 		return;
