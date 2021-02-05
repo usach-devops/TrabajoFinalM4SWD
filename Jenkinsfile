@@ -6,7 +6,7 @@ pipeline {
     stage('Compile') {
       steps {
 
-        bat 'mvn clean compile -e'
+        ./mvnw clean compile -e
 
       }
     }
@@ -31,9 +31,6 @@ pipeline {
 
       }
     }
-
-    
-
         stage('Test Postman') {
             steps {
                 bat "newman run postman\\LabDevops-v2.postman_collection.json -e postman\\DevOpsLabUnidad4.postman_environment.json"
@@ -41,7 +38,7 @@ pipeline {
         }
     
 
-        stage('Test Load') {
+        stage('Test de Carga Jmeter') {
             steps {
                 bat "mvn verify -Pperformance"
             }
