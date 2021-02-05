@@ -71,7 +71,7 @@ public class AppTests
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         
-        driver = new ChromeDriver(options);
+        driver = new ChromeDriver();
         driver.get("https://www.amazon.com");
         driver.manage().window().maximize();
         System.out.println(driver.getCurrentUrl());
