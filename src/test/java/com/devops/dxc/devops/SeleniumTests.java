@@ -40,7 +40,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
  */
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
-public class AppTests 
+public class SeleniumTests 
 {
     
     private static WebDriver driver;
@@ -57,7 +57,7 @@ public class AppTests
         switch (UtilSelenium.getOS()) {
             case WINDOWS:
                 //do windows stuff
-                System.setProperty("webdriver.chrome.driver","drivers/chromedriver.exe");
+                System.setProperty("webdriver.chrome.driver","C:\\selenium\\drivers\\chromedriver.exe");
                 break;
             case LINUX:
                 System.setProperty("webdriver.chrome.driver","drivers/chromedriver");
