@@ -1,30 +1,60 @@
-package selenium;
+package com.devops.dxc.devops;
 
-import static org.junit.Assert.assertEquals;
+// import static org.junit.Assert.assertEquals;
+// //import static org.junit.Assert.assertTrue;
+
+// import com.devops.dxc.selenium.UtilSelenium;
+
+// import org.springframework.boot.test.context.SpringBootTest;
+// import org.junit.Test;
+// import org.junit.Before;
+// import org.junit.After;
+
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.devops.dxc.devops.model.Dxc;
+import com.devops.dxc.devops.model.Util;
+import com.devops.dxc.selenium.UtilSelenium;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Order;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.junit.Test;
-import org.junit.Before;
-import org.junit.After;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest 
+@SpringBootTest
+@TestMethodOrder(OrderAnnotation.class)
+public class AppTests 
 {
     
-    private WebDriver driver;
+    private static WebDriver driver;
 
-    @Before
-    public void setUp(){
+    @Test
+    @Order(1)
+    void contextLoads() {
+        setUp();
+    }
+
+   
+    void setUp(){
         System.out.println("Iniciando configuración...");
 
-        switch (Util.getOS()) {
+        switch (UtilSelenium.getOS()) {
             case WINDOWS:
                 //do windows stuff
                 System.setProperty("webdriver.chrome.driver","drivers/chromedriver.exe");
@@ -50,7 +80,8 @@ public class AppTest
     }
 
     @Test
-    public void shouldAnswerWithTrue() throws InterruptedException
+    @Order(2)
+    void shouldAnswerWithTrue() throws InterruptedException 
     {
         System.out.println("Iniciando Pruebas...");
         Thread.sleep(2000);
@@ -71,10 +102,9 @@ public class AppTest
         System.out.println("El titulo es: " + driver.getTitle());
 
         assertEquals("Amazon.com: The DevOps Handbook: How to Create World-Class Agility, Reliability, and Security in Technology Organizations (9781942788003): Kim, Gene, Debois, Patrick, Willis, John, Humble, Jez, Allspaw, John: Books", driver.getTitle());
-    }
-
-    @After
-    public void tearDown() throws Exception {
+        System.out.println("Fin Test");
         driver.quit();
     }
+
+
 }
