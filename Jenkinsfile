@@ -13,7 +13,7 @@ pipeline {
     stage('Test DxC') {
       steps {
 
-        bat 'mvn clean test -Dtest=DevopsApplicationTests -e'
+        bat 'mvn clean test -e'
 
       }
     }
