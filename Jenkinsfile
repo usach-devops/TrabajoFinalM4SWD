@@ -6,14 +6,14 @@ pipeline {
     stage('Compile') {
       steps {
 
-        ./mvnw clean compile -e
+        bat 'mvn clean compile -e'
 
       }
     }
-    stage('Test') {
+    stage('Test DxC') {
       steps {
 
-        bat 'mvn clean test -e'
+        bat 'mvn clean test -Dtest=DevopsApplicationTests -e'
 
       }
     }
@@ -37,6 +37,11 @@ pipeline {
             }
         }
     
+        stage('Test Selenium') {
+            steps {
+                bat "mvn test -Dtest=AppTests -e"
+            }
+        }
 
         stage('Test de Carga Jmeter') {
             steps {
