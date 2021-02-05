@@ -21,6 +21,7 @@ import com.devops.dxc.selenium.UtilSelenium;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
@@ -44,14 +45,13 @@ public class AppTests
     
     private static WebDriver driver;
 
-    @Test
-    @Order(1)
-    void contextLoads() {
+@BeforeAll
+    static void contextLoads() {
         setUp();
     }
 
    
-    void setUp(){
+    static void setUp(){
         System.out.println("Iniciando configuración...");
 
         switch (UtilSelenium.getOS()) {
@@ -80,7 +80,7 @@ public class AppTests
     }
 
     @Test
-    @Order(2)
+    @Order(1)
     void shouldAnswerWithTrue() throws InterruptedException 
     {
         System.out.println("Iniciando Pruebas...");
@@ -103,8 +103,15 @@ public class AppTests
 
         assertEquals("Amazon.com: The DevOps Handbook: How to Create World-Class Agility, Reliability, and Security in Technology Organizations (9781942788003): Kim, Gene, Debois, Patrick, Willis, John, Humble, Jez, Allspaw, John: Books", driver.getTitle());
         System.out.println("Fin Test");
+        
+    }
+
+    @AfterAll
+    static void Fin()
+    {
         driver.quit();
     }
+    
 
 
 }
