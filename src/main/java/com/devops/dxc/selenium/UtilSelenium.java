@@ -1,5 +1,5 @@
-package selenium;
-public class Util {     
+package com.devops.dxc.selenium;
+public class UtilSelenium {     
     public enum OS {
         WINDOWS, LINUX, MAC, SOLARIS
     };// Operating systems.
