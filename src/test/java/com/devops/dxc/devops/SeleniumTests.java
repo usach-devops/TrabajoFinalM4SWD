@@ -40,7 +40,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
  */
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
-public class AppTests 
+public class SeleniumTests 
 {
     
     private static WebDriver driver;

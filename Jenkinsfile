@@ -10,13 +10,14 @@ pipeline {
 
       }
     }
-    stage('Test DxC') {
+    stage('Test DxC - Selenium') {
       steps {
 
         bat 'mvn clean test -e'
 
       }
     }
+
     stage('Jar') {
       steps {
         bat 'mvn clean package -e'
@@ -31,23 +32,17 @@ pipeline {
 
       }
     }
-        stage('Test Postman') {
-            steps {
-                bat "newman run postman\\LabDevops-v2.postman_collection.json -e postman\\DevOpsLabUnidad4.postman_environment.json"
-            }
+    stage('Test Postman') {
+        steps {
+            bat "newman run postman\\LabDevops-v2.postman_collection.json -e postman\\DevOpsLabUnidad4.postman_environment.json"
         }
-    
-        stage('Test Selenium') {
-            steps {
-                bat "mvn test -Dtest=AppTests -e"
-            }
+    }
+   
+    stage('Test de Carga Jmeter') {
+        steps {
+            bat "mvn verify -Pperformance"
         }
-
-        stage('Test de Carga Jmeter') {
-            steps {
-                bat "mvn verify -Pperformance"
-            }
-        }
+    }
  
   }
 }
