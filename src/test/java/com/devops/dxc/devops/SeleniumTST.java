@@ -14,8 +14,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.devops.dxc.devops.model.Dxc;
-import com.devops.dxc.devops.model.Util;
 import com.devops.dxc.selenium.UtilSelenium;
 
 import org.junit.After;
@@ -40,7 +38,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
  */
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
-public class SeleniumTests 
+public class SeleniumTST 
 {
     
     private static WebDriver driver;
