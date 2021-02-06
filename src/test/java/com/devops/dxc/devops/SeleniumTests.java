@@ -54,9 +54,9 @@ public class SeleniumTests
     static void setUp(){
         System.out.println("Iniciando configuración...");
 
-        OS os = UtilSelenium.getOS()
+        OS os = UtilSelenium.getOS();
 
-        System.out.println(os)
+        System.out.println(os);
 
         switch (os) {
            
