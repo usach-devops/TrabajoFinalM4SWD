@@ -20,21 +20,21 @@ pipeline {
 
     stage('Run') {
       steps {
-        sh './mvnw spring-boot:run &'
-			sleep 20
+        execute('./mvnw spring-boot:run &')
+		sleep 20
 
       }
     }
 
     stage('Test Postman') {
         steps {
-            sh "newman run ./postman/LabDevops-v2.postman_collection.json -e ./postman/DevOpsLabUnidad4.postman_environment.json"
+            execute ("newman run ./postman/LabDevops-v2.postman_collection.json -e ./postman/DevOpsLabUnidad4.postman_environment.json")
         }
     }
 
     stage('Test Selenium') {
         steps {
-            sh "./mvnw test -Dtest=SeleniumTST -DfailIfNoTests=false -e"
+            execute( "./mvnw test -Dtest=SeleniumTST -DfailIfNoTests=false -e")
         }
     }
 
