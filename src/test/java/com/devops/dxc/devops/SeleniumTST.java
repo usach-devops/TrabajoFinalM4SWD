@@ -68,16 +68,15 @@ public class SeleniumTST
                 break;
         }
 
-        //System.setProperty("webdriver.chrome.driver","drivers/chromedriver.exe");
+        // System.setProperty("webdriver.chrome.driver","/opt/chromedriver");
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
-
-
+        
         driver = new ChromeDriver(options);
-        driver.get("https://www.amazon.com");
+        driver.get("http://192.81.214.49/");
         driver.manage().window().maximize();
         System.out.println(driver.getCurrentUrl());
         System.out.println(driver.getTitle());
