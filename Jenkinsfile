@@ -5,9 +5,8 @@ pipeline {
 
     stage('Compile') {
       steps {
-
-        sh './mvnw clean compile -e'
-      }
+            execute('./mvnw clean compile -e')
+          }
     }
 
 /*
@@ -47,4 +46,14 @@ pipeline {
     // }
  
   }
+}
+
+def execute(command){
+    if (isUnix()) {
+        sh command
+    }
+    else{
+        bat command
+    }
+
 }
