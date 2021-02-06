@@ -21,7 +21,7 @@ pipeline {
 
     stage('Run') {
       steps {
-        sh './mvnw mvn spring-boot:run &'
+        sh './mvnw spring-boot:run &'
 			sleep 20
 
       }
