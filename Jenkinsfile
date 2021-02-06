@@ -13,7 +13,7 @@ pipeline {
     stage('Test DxC') {
       steps {
 
-        bat 'mvn test -Dtest=DevopsApicationTests -e'
+        bat 'mvn test -Dtest=DevopsApicationTests -DfailIfNoTests=false -e'
 
       }
     }
@@ -56,7 +56,7 @@ pipeline {
 
     stage('Test Selenium') {
         steps {
-            bat "mvn test -Dtest=SeleniumTests -e"
+            bat "mvn test -Dtest=SeleniumTests -DfailIfNoTests=false -e"
         }
     }
 
