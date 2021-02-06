@@ -10,10 +10,18 @@ pipeline {
 
       }
     }
-    stage('Test DxC - Selenium') {
+    stage('Test DxC') {
       steps {
 
-        bat 'mvn clean test -e'
+        bat 'mvn test -Dtest=DevopsApicationTests -e'
+
+      }
+    }
+
+    stage('Skip Test') {
+      steps {
+
+        bat 'mvn install -DskipTests'
 
       }
     }
@@ -37,6 +45,21 @@ pipeline {
             bat "newman run postman\\LabDevops-v2.postman_collection.json -e postman\\DevOpsLabUnidad4.postman_environment.json"
         }
     }
+
+    stage('Enable Selenium') {
+      steps {
+
+        bat 'mvn install -DskipTests=false'
+
+      }
+    }
+
+    stage('Test Selenium') {
+        steps {
+            bat "mvn test -Dtest=SeleniumTests -e"
+        }
+    }
+
    
     stage('Test de Carga Jmeter') {
         steps {
