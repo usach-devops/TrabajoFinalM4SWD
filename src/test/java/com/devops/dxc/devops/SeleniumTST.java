@@ -72,8 +72,11 @@ public class SeleniumTST
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
-        
-        driver = new ChromeDriver();
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+
+
+        driver = new ChromeDriver(options);
         driver.get("https://www.amazon.com");
         driver.manage().window().maximize();
         System.out.println(driver.getCurrentUrl());
