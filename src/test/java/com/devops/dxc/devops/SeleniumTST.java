@@ -14,8 +14,6 @@ import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.devops.dxc.devops.model.Dxc;
-import com.devops.dxc.devops.model.Util;
 import com.devops.dxc.selenium.UtilSelenium;
 
 import org.junit.After;
@@ -40,7 +38,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
  */
 @SpringBootTest
 @TestMethodOrder(OrderAnnotation.class)
-public class SeleniumTests 
+public class SeleniumTST 
 {
     
     private static WebDriver driver;
@@ -59,11 +57,9 @@ public class SeleniumTests
                 //do windows stuff
                 System.setProperty("webdriver.chrome.driver","C:\\selenium\\drivers\\chromedriver.exe");
                 break;
-            case LINUX:
-                System.setProperty("webdriver.chrome.driver","drivers/chromedriver");
-                 break;
-             default:
-             break;
+                default:
+                  System.setProperty("webdriver.chrome.driver","opt/chromedriver");
+                break;
         }
 
         //System.setProperty("webdriver.chrome.driver","drivers/chromedriver.exe");
@@ -71,7 +67,7 @@ public class SeleniumTests
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         
-        driver = new ChromeDriver(options);
+        driver = new ChromeDriver();
         driver.get("https://www.amazon.com");
         driver.manage().window().maximize();
         System.out.println(driver.getCurrentUrl());
