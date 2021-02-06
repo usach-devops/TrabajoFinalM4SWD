@@ -22,11 +22,14 @@ public class Util {
      */
     public static int getDxc(int ahorro){
         if(((ahorro*0.1)/getUf()) > 150 ){
-            return (int) (150*getUf()) ;
-        } else if((ahorro*0.1)<=1000000 && ahorro >=1000000){
-            return (int) 1000000;
-        } else if( ahorro <=1000000){
+            return (int) (150*getUf());
+            
+        } else if((ahorro*0.1)<=35*getUf() && ahorro >=35*getUf()){
+            return (int) 35*getUf();
+            
+        } else if( ahorro <= 35*getUf()){
             return (int) ahorro;
+            
         } else {
             return (int) (ahorro*0.1);
         }
@@ -42,33 +45,32 @@ public class Util {
 
     public static int getImpuesto(int sueldo, int dxc)
     {
-        //int SueldoAnual = sueldo * 12;
         int retorno = 0;
         
         //Se modifica formula con monto de sueldo ingresarlo a matriz de impuesto segun web https://www.chileatiende.gob.cl/fichas/81027-retiros-del-10-de-los-fondos-de-afp
         
         if (sueldo < 1500000)
-        	retorno = (int)(0*dxc);
+        	retorno = 0;
         
-        if (sueldo >= 1500000 && sueldo <= 1530000) 
+        if (sueldo >= 1500000 && sueldo < 1530000) 
             retorno = (int)(0.04*dxc);
         
-        if (sueldo > 1530000 && sueldo <=2550000)
+        if (sueldo >= 1530000 && sueldo < 2550000)
             retorno = (int)(0.08*dxc);
         
-        if (sueldo > 2550000 && sueldo <=3570000)
+        if (sueldo >= 2550000 && sueldo < 3570000)
             retorno = (int)(0.135*dxc);
         
-        if (sueldo > 3570000 && sueldo <=4590000)
+        if (sueldo >= 3570000 && sueldo < 4590000)
             retorno = (int)(0.23*dxc);
         
-        if (sueldo > 4590000 && sueldo <=6120000)
+        if (sueldo >= 4590000 && sueldo <6120000)
             retorno = (int)(0.304*dxc);
 
-        if (sueldo > 6120000 && sueldo <=15818000)
+        if (sueldo > 6120000 && sueldo < 15818000)
             retorno =  (int)(0.35*dxc);
 
-        if (sueldo > 15818000)
+        if (sueldo >= 15818000)
             retorno =  (int)(0.4*dxc);
 
         return retorno;
