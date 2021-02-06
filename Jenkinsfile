@@ -5,7 +5,7 @@ pipeline {
 
     stage('Test JUnit') {
       steps {
-            execute('./mvnw clean compile -e')
+            execute('./mvnw test')
           }
     }
 
@@ -13,7 +13,7 @@ pipeline {
         steps {
             execute('./mvnw spring-boot:run &')
             sleep 20
-            execute ("newman run ./postman/LabDevops-v2.postman_collection.json -e ./postman/DevOpsLabUnidad4.postman_environment.json")
+            execute ("newman run https://raw.githubusercontent.com/usach-devops/TrabajoFinalM4Postman/develop/LabDevopsUnidad4.postman_collection.json -e ./postman/DevOpsLabUnidad4.postman_environment.json")
         }
     }
 
