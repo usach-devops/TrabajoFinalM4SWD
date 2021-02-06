@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import com.devops.dxc.devops.model.Dxc;
 import com.devops.dxc.devops.model.Util;
 import com.devops.dxc.selenium.UtilSelenium;
+import com.devops.dxc.selenium.UtilSelenium.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -65,8 +66,7 @@ public class SeleniumTests
                 System.setProperty("webdriver.chrome.driver","C:\\selenium\\drivers\\chromedriver.exe");
                 break;
             case LINUX:
-                
-                
+
                 System.setProperty("webdriver.chrome.driver","/opt/chromedriver");
                  break;
              default:
