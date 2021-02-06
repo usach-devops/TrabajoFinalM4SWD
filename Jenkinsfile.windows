@@ -6,14 +6,14 @@ pipeline {
     stage('Compile') {
       steps {
 
-        sh './mvnw clean compile -e'
+        bat 'mvn clean compile -e'
 
       }
     }
     stage('Test DxC') {
       steps {
 
-        sh './mvnw test -Dtest=DevopsApicationTests -DfailIfNoTests=false -e'
+        bat 'mvn test -Dtest=DevopsApicationTests -DfailIfNoTests=false -e'
 
       }
     }
@@ -21,49 +21,49 @@ pipeline {
     stage('Skip Test') {
       steps {
 
-        sh './mvnw install -DskipTests'
+        bat 'mvn install -DskipTests'
 
       }
     }
 
     stage('Jar') {
       steps {
-        sh './mvnw clean package -e'
+        bat 'mvn clean package -e'
 
       }
     }
 
     stage('Run') {
       steps {
-        sh "start ./mvnw spring-boot:run &"
+        bat "start mvn spring-boot:run &"
 				sleep 20
 
       }
     }
     stage('Test Postman') {
         steps {
-            sh "newman run postman\\LabDevops-v2.postman_collection.json -e postman\\DevOpsLabUnidad4.postman_environment.json"
+            bat "newman run postman\\LabDevops-v2.postman_collection.json -e postman\\DevOpsLabUnidad4.postman_environment.json"
         }
     }
 
     stage('Enable Selenium') {
       steps {
 
-        sh './mvnw install -DskipTests=false'
+        bat 'mvn install -DskipTests=false'
 
       }
     }
 
     stage('Test Selenium') {
         steps {
-            sh "./mvnw test -Dtest=SeleniumTests -DfailIfNoTests=false -e"
+            bat "mvn test -Dtest=SeleniumTests -DfailIfNoTests=false -e"
         }
     }
 
    
     stage('Test de Carga Jmeter') {
         steps {
-            sh "./mvnw verify -Pperformance"
+            bat "mvn verify -Pperformance"
         }
     }
  
