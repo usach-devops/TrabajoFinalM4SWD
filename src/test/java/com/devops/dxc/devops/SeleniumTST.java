@@ -15,101 +15,230 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.devops.dxc.selenium.UtilSelenium;
-
-import org.junit.After;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import com.devops.dxc.devops.model.Util;
 
-/**
- * Unit test for simple App.
- */
 @SpringBootTest
-@TestMethodOrder(OrderAnnotation.class)
-public class SeleniumTST 
-{
-    
+public class SeleniumTST {
+    private static int valUF;
     private static WebDriver driver;
 
-@BeforeAll
+    @BeforeAll
     static void contextLoads() {
+        valUF = Util.getUf();
         setUp();
     }
 
-   
-    static void setUp(){
+    static void setUp() {
         System.out.println("Iniciando configuración...");
-
-        
 
         switch (UtilSelenium.getOS()) {
             case WINDOWS:
-                //do windows stuff
-                System.setProperty("webdriver.chrome.driver","C:\\selenium\\drivers\\chromedriver.exe");
+                // do windows stuff
+                System.setProperty("webdriver.chrome.driver", "C:\\selenium\\drivers\\chromedriver.exe");
                 break;
             default:
-                 System.setProperty("webdriver.chrome.driver","/opt/chromedriver");
-                 break;
+                System.setProperty("webdriver.chrome.driver", "/opt/chromedriver");
+                break;
         }
-
-        // System.setProperty("webdriver.chrome.driver","/opt/chromedriver");
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
-        
         driver = new ChromeDriver(options);
         driver.get("http://192.81.214.49/");
         driver.manage().window().maximize();
         System.out.println(driver.getCurrentUrl());
         System.out.println(driver.getTitle());
-        driver.navigate().to("https://www.google.com");
     }
 
-    @Test
     @Order(1)
-    void shouldAnswerWithTrue() throws InterruptedException 
-    {
+    @ParameterizedTest(name = "ahorro = {0} --> valor fondo invalido ")
+    @CsvSource({ "''", "0"
+
+    })
+    void ValorFondoInvalido(String ahorro) throws InterruptedException {
+        System.out.println("Iniciando ValorFondoInvalido...");
+        driver.findElement(By.id("btnReset")).click();
+        driver.findElement(By.id("iAhorro")).click();
+        driver.findElement(By.id("iAhorro")).sendKeys(ahorro);
+        driver.findElement(By.id("iSueldo")).click();
+        driver.findElement(By.id("iSueldo")).sendKeys("1000000");
+        driver.findElement(By.id("btnSubmit")).click();
+        Thread.sleep(2000);
+        String diezResponse = driver.findElement(By.xpath("//span[@id='diez']")).getText();
+        System.out.println("diezResponse = " + diezResponse);
+        assertTrue("Error en ahorro " + ahorro, diezResponse.trim().equals("") || Integer.parseInt(diezResponse) == 0);
+        return;
+    }
+
+    @Order(2)
+    @ParameterizedTest(name = "ahorro = {0} , sueldo {1}, retiro saldo ")
+    @CsvSource({
+            /*
+             * " , ", "0, 0",
+             */
+            "900000, 1000000"/*
+                              * , "1100000, 1000000", "5000000, 1500000", "44000000, 1500000",
+                              * "50000000, 2500000"
+                              */
+    })
+    void RetirarSaldo(String ahorro, String sueldo) throws InterruptedException {
+        System.out.println("Iniciando RetirarSaldo...");
+        driver.findElement(By.id("btnReset")).click();
+        driver.findElement(By.id("iAhorro")).click();
+        driver.findElement(By.id("iAhorro")).sendKeys(ahorro);
+        driver.findElement(By.id("iSueldo")).click();
+        driver.findElement(By.id("iSueldo")).sendKeys(sueldo);
+        driver.findElement(By.id("btnSubmit")).click();
+        Thread.sleep(2000);
+        String diezResponse = driver.findElement(By.xpath("//span[@id='diez']")).getText();
+        System.out.println("diezResponse = " + diezResponse);
+
+        assertEquals(Integer.parseInt(ahorro), Integer.parseInt(diezResponse));
+    }
+
+    @Order(3)
+    @ParameterizedTest(name = "ahorro = {0} , sueldo {1}, retiro {2} UF ")
+    @CsvSource({
+            /*
+             * " , , ", "0, 0, 0",
+             */
+            "900000, 1000000, 150", "1100000, 1000000, 150", "5000000, 1500000, 150", "5000000, 1000000, 150" })
+    void NoPuedeRetirar150UF(String ahorro, String sueldo, int retiroUF) throws InterruptedException {
+        System.out.println("Iniciando NoPuedeRetirar150UF...");
+        driver.findElement(By.id("btnReset")).click();
+        driver.findElement(By.id("iAhorro")).click();
+        driver.findElement(By.id("iAhorro")).sendKeys(ahorro);
+        driver.findElement(By.id("iSueldo")).click();
+        driver.findElement(By.id("iSueldo")).sendKeys(sueldo);
+        driver.findElement(By.id("btnSubmit")).click();
+        Thread.sleep(2000);
+
+        int esperado = retiroUF * valUF;
+        String diezResponse = driver.findElement(By.xpath("//span[@id='diez']")).getText();
+        System.out.println("diezResponse = " + diezResponse);
+
+        assertNotEquals(esperado, Integer.parseInt(diezResponse));
+
+        return;
+    }
+
+    @Order(4)
+    @ParameterizedTest(name = "ahorro = {0} , sueldo {1}, retiro {2} UF ")
+    @CsvSource({
+            /*
+             * " , , ", "0, 0, 0",
+             */
+            "44000000, 1500000, 150", "50000000, 2500000, 150" })
+    void PuedeRetirar150UF(String ahorro, String sueldo, int retiroUF) throws InterruptedException {
         System.out.println("Iniciando Pruebas...");
-        Thread.sleep(2000);
-        WebElement searchbox = driver.findElement(By.name("q"));
-        Thread.sleep(2000);
-        searchbox.sendKeys("HandBook Devops");
-        searchbox.submit();
-        Thread.sleep(2000);
-
-        /*WebElement libro = driver.findElement(By.xpath("//*[@id=\"hdtb-msb-vis\"]/div[5]/a"));
-        libro.click();*/
-
-        WebElement compra = driver.findElements(By.className("LC20lb")).get(0);
-        Thread.sleep(2000);
-        compra.click();
+        driver.findElement(By.id("btnReset")).click();
+        driver.findElement(By.id("iAhorro")).click();
+        driver.findElement(By.id("iAhorro")).sendKeys(ahorro);
+        driver.findElement(By.id("iSueldo")).click();
+        driver.findElement(By.id("iSueldo")).sendKeys(sueldo);
+        driver.findElement(By.id("btnSubmit")).click();
         Thread.sleep(2000);
 
-        System.out.println("El titulo es: " + driver.getTitle());
+        int esperado = retiroUF * valUF;
 
-        assertEquals("Amazon.com: The DevOps Handbook: How to Create World-Class Agility, Reliability, and Security in Technology Organizations (9781942788003): Kim, Gene, Debois, Patrick, Willis, John, Humble, Jez, Allspaw, John: Books", driver.getTitle());
-        System.out.println("Fin Test");
-        
+        String diezResponse = driver.findElement(By.xpath("//span[@id='diez']")).getText();
+        System.out.println(diezResponse);
+
+        assertEquals(esperado, Integer.parseInt(diezResponse));
+        return;
+    }
+
+    @Order(5)
+    @ParameterizedTest(name = "ahorro = {0} , sueldo {1}, saldo cero ")
+    @CsvSource({
+            /*
+             * " , ", "0, 0",
+             */
+            "900000, 1000000" })
+    void SaldoCero(String ahorro, String sueldo) throws InterruptedException {
+        System.out.println("Iniciando SaldoCero...");
+        driver.findElement(By.id("btnReset")).click();
+        driver.findElement(By.id("iAhorro")).click();
+        driver.findElement(By.id("iAhorro")).sendKeys(ahorro);
+        driver.findElement(By.id("iSueldo")).click();
+        driver.findElement(By.id("iSueldo")).sendKeys(sueldo);
+        driver.findElement(By.id("btnSubmit")).click();
+        Thread.sleep(2000);
+
+        String saldoResponse = driver.findElement(By.xpath("//span[@id='saldo']")).getText();
+        System.out.println("saldoResponse = " + saldoResponse);
+
+        assertEquals(0, Integer.parseInt(saldoResponse));
+        return;
+    }
+
+    @Order(6)
+    @ParameterizedTest(name = "ahorro = {0} , sueldo {1}, saldo cero ")
+    @CsvSource({ "5000000, 1500000", "44000000, 1500000", "50000000, 2500000", "1100000, 1000000" })
+    void SaldoMayorACero(String ahorro, String sueldo) throws InterruptedException {
+        System.out.println("Iniciando SaldoMayorACero...");
+        driver.findElement(By.id("btnReset")).click();
+        driver.findElement(By.id("iAhorro")).click();
+        driver.findElement(By.id("iAhorro")).sendKeys("");
+        driver.findElement(By.id("iAhorro")).sendKeys(ahorro);
+        driver.findElement(By.id("iSueldo")).click();
+        driver.findElement(By.id("iSueldo")).sendKeys("");
+        driver.findElement(By.id("iSueldo")).sendKeys(sueldo);
+        driver.findElement(By.id("btnSubmit")).click();
+        Thread.sleep(2000);
+
+        // String sueldoResponse = driver.findElement(By.xpath("//input[@id='iSueldo']")).getAttribute("value");
+        // String ahorroResponse = driver.findElement(By.xpath("//input[@id='iAhorro']")).getAttribute("value");
+
+        String saldoResponse = driver.findElement(By.xpath("//span[@id='saldo']")).getText();
+
+        System.out.println("saldoResponse = " + saldoResponse);
+        // System.out.println("ahorro = " + ahorroResponse);
+        // System.out.println("sueldo = " + sueldoResponse);
+
+        assertTrue("Error en Saldo " + saldoResponse, Integer.parseInt(saldoResponse) > 0);
+    }
+
+    @Order(7)
+    @ParameterizedTest(name = "ahorro = {0} , sueldo {1}, paga Impuesto ")
+    @CsvSource({
+            /* " , ", */
+            "0, 0", "900000, 1000000", "1100000, 1000000", "6000000, 2500000", "44000000, 1500000", "50000000, 2500000",
+            "50000000, 1499999", "50000000, 1500000", "50000000, 1529999", "50000000, 1530000", "50000000, 1530001",
+            "50000000, 2549999", "50000000, 2550000", "50000000, 2550001", "50000000, 3569999", "50000000, 3570000",
+            "50000000, 3570001", "50000000, 4589999", "50000000, 4590000", "50000000, 4590001", "50000000, 6119999",
+            "50000000, 6120000", "50000000, 6120001", "50000000, 15817999", "50000000, 15818000",
+            "50000000, 15818001" })
+    void PagaImpuesoCaso1(String ahorro, String sueldo) throws InterruptedException {
+        System.out.println("Iniciando PagaImpuesoCaso1...");
+        driver.findElement(By.id("btnReset")).click();
+        driver.findElement(By.id("iAhorro")).click();
+        driver.findElement(By.id("iAhorro")).sendKeys(ahorro);
+        driver.findElement(By.id("iSueldo")).click();
+        driver.findElement(By.id("iSueldo")).sendKeys(sueldo);
+        driver.findElement(By.id("btnSubmit")).click();
+        Thread.sleep(2000);
+
+        String impuestoResponse = driver.findElement(By.xpath("//span[@id='impuesto']")).getText();
+        System.out.println("impuestoResponse = " + impuestoResponse);
+
+        assertTrue("Error en Impuesto ", Integer.parseInt(impuestoResponse) >= 0);
+        return;
     }
 
     @AfterAll
-    static void Fin()
-    {
+    static void Fin() {
         driver.quit();
     }
-    
-
 
 }
