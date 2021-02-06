@@ -57,7 +57,7 @@ public class SeleniumTests
         switch (UtilSelenium.getOS()) {
             case WINDOWS:
                 //do windows stuff
-                System.setProperty("webdriver.chrome.driver","C:\\selenium\\drivers\\chromedriver.exe");
+            	System.setProperty("webdriver.chrome.driver","drivers/chromedriver.exe");
                 break;
             case LINUX:
                 System.setProperty("webdriver.chrome.driver","drivers/chromedriver");

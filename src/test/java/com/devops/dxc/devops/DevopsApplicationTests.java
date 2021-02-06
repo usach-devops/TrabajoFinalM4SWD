@@ -73,13 +73,9 @@ class DevopsApplicationTests {
 
 	 @ParameterizedTest(name = "ahorro = {0} , sueldo {1}, retiro saldo ")
 	 @CsvSource({
-	/*	" , ",	
-		"0, 0",*/
-		"900000, 1000000"/*,
-		"1100000, 1000000",
-		"5000000, 1500000",
-		"44000000, 1500000",
-		"50000000, 2500000"*/
+	
+		"900000, 1499000"
+		 
 	 })
 	 public void RetirarSaldo(int ahorro,int sueldo) {
  
@@ -92,14 +88,11 @@ class DevopsApplicationTests {
 
 	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, retiro {2} UF ")
 	@CsvSource({
-		/*" , , ",
-		"0, 0, 0",*/
-		"900000, 1000000, 150",
 		"1100000, 1000000, 150",
 		"5000000, 1500000, 150",
 		"5000000, 1000000, 150"
 	})
-	public void NoPuedeRetirar150UF(int ahorro,int sueldo, int retiroUF) {
+	public void PuedeRetirar35UF(int ahorro,int sueldo, int retiroUF) {
 
 		Dxc res = new Dxc(ahorro, sueldo);
 		int mi10 = res.getDxc();
@@ -111,8 +104,6 @@ class DevopsApplicationTests {
 
 	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, retiro {2} UF ")
 	@CsvSource({
-		/*" , , ",
-		"0, 0, 0",*/
 		"44000000, 1500000, 150",
 		"50000000, 2500000, 150"
 	})
@@ -128,8 +119,7 @@ class DevopsApplicationTests {
 
 	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, saldo cero ")
 	@CsvSource({
-		/*" , ",
-		"0, 0",	*/
+
 		"900000, 1000000"
 	})
 	public void SaldoCero(int ahorro,int sueldo) {
@@ -146,9 +136,7 @@ class DevopsApplicationTests {
 	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, saldo cero ")
 	@CsvSource({
 		"1100000, 1000000",
-		"5000000, 1500000",
 		"44000000, 1500000",
-		"50000000, 2500000"
 	})
 	public void SaldoMayorACero(int ahorro,int sueldo) {
 
@@ -164,33 +152,22 @@ class DevopsApplicationTests {
 
 	@ParameterizedTest(name = "ahorro = {0} , sueldo {1}, paga Impuesto ")
 	@CsvSource({
-	/*	" , ",*/
-		"0, 0",	
-		"900000, 1000000",
-		"1100000, 1000000",
-		"6000000, 2500000",
-		"44000000, 1500000",
-		"50000000, 2500000",
-		"50000000, 1499999",
-		"50000000, 1500000",
-		"50000000, 1529999",
-		"50000000, 1530000",
-		"50000000, 1530001",
-		"50000000, 2549999",
-		"50000000, 2550000",
-		"50000000, 2550001",
-		"50000000, 3569999",
-		"50000000, 3570000",
-		"50000000, 3570001",
-		"50000000, 4589999",
-		"50000000, 4590000",
-		"50000000, 4590001",
-		"50000000, 6119999",
-		"50000000, 6120000",
-		"50000000, 6120001",
-		"50000000, 15817999",
-		"50000000, 15818000",
-		"50000000, 15818001"
+		//Pruebas de bordes de sueldo con monto de retiro fijo
+		"50000000, 1499999", // sin impuesto
+		"50000000, 1500000", // con impuesto 0,04
+		"50000000, 1529999", // con impuesto 0,04
+		"50000000, 1530000", // con impuesto 0,08
+		"50000000, 2549999", // con impuesto 0,08
+		"50000000, 2550000", // con impuesto 0,135
+		"50000000, 3569999", // con impuesto 0,135
+		"50000000, 3570000", // con impuesto 0,23
+		"50000000, 4589999", // con impuesto 0,23
+		"50000000, 4590000", // con impuesto 0,304
+		"50000000, 6119999", // con impuesto 0,304
+		"50000000, 6120000", // con impuesto 0,35
+		"50000000, 15817999", // con impuesto 0,35
+		"50000000, 15818000", // con impuesto 0,4
+		"50000000, 15818001", // con impuesto 0,4
 	})
 	public void PagaImpuesoCaso1(int ahorro, int sueldo) {
 
@@ -202,7 +179,5 @@ class DevopsApplicationTests {
 		System.out.println("impuesto=" + imp);
 		assertTrue("Error en Impuesto", imp >=0);
 		return;
-
 	}
 }
-
