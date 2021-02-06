@@ -29,7 +29,7 @@ pipeline {
 
     stage('Test Postman') {
         steps {
-            sh "newman run postman\\LabDevops-v2.postman_collection.json -e postman\\DevOpsLabUnidad4.postman_environment.json"
+            sh "newman run ./postman/LabDevops-v2.postman_collection.json -e ./postman/DevOpsLabUnidad4.postman_environment.json"
         }
     }
 
