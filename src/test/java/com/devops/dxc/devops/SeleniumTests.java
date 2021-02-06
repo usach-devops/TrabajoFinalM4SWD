@@ -60,7 +60,7 @@ public class SeleniumTests
                 System.setProperty("webdriver.chrome.driver","C:\\selenium\\drivers\\chromedriver.exe");
                 break;
             case LINUX:
-                System.setProperty("webdriver.chrome.driver","drivers/chromedriver");
+                System.setProperty("webdriver.chrome.driver","./drivers/chromedriver");
                  break;
              default:
              break;
