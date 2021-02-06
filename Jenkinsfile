@@ -5,7 +5,8 @@ pipeline {
 
     stage('Test JUnit') {
       steps {
-            execute('./mvnw test')
+            execute('./mvnw clean compile -e')
+            execute('./mvnw clean package -e')
           }
     }
 
