@@ -55,13 +55,15 @@ public class SeleniumTests
         System.out.println("Iniciando configuración...");
 
         switch (UtilSelenium.getOS()) {
+            System.out.println(UtilSelenium.getOS())
             case WINDOWS:
                 //do windows stuff
-                System.setProperty("OS WINDOWS");
+                
                 System.setProperty("webdriver.chrome.driver","C:\\selenium\\drivers\\chromedriver.exe");
                 break;
             case LINUX:
-                System.setProperty("OS LINUX");
+                
+                
                 System.setProperty("webdriver.chrome.driver","./drivers/chromedriver");
                  break;
              default:
