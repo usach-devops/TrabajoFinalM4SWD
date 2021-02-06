@@ -54,25 +54,25 @@ public class SeleniumTests
     static void setUp(){
         System.out.println("Iniciando configuración...");
 
+        
+
         switch (UtilSelenium.getOS()) {
             case WINDOWS:
                 //do windows stuff
                 System.setProperty("webdriver.chrome.driver","C:\\selenium\\drivers\\chromedriver.exe");
                 break;
-            case LINUX:
-                System.setProperty("webdriver.chrome.driver","drivers/chromedriver");
+            default:
+                 System.setProperty("webdriver.chrome.driver","/opt/chromedriver");
                  break;
-             default:
-             break;
         }
 
-        //System.setProperty("webdriver.chrome.driver","drivers/chromedriver.exe");
+        // System.setProperty("webdriver.chrome.driver","/opt/chromedriver");
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
         
         driver = new ChromeDriver(options);
-        driver.get("https://www.amazon.com");
+        driver.get("http://192.81.214.49/");
         driver.manage().window().maximize();
         System.out.println(driver.getCurrentUrl());
         System.out.println(driver.getTitle());
