@@ -5,44 +5,36 @@ pipeline {
 
     stage('Compile') {
       steps {
-
-        bat 'mvn clean compile -e'
-      }
+            execute('./mvnw clean compile -e')
+          }
     }
 
 /*
-    stage('Test DxC') {
-      steps {
-
-        bat 'mvn clean test -e'
-
-      }
-    }
-*/
     stage('Test Dxc & Jar') {
       steps {
-        bat 'mvn clean package -e'
+        sh './mvnw clean package -e'
 
       }
     }
+    */
 
     stage('Run') {
       steps {
-        bat "start mvn spring-boot:run &"
-				sleep 10
+        execute('./mvnw spring-boot:run &')
+		sleep 20
 
       }
     }
 
     stage('Test Postman') {
         steps {
-            bat "newman run postman\\LabDevops-v2.postman_collection.json -e postman\\DevOpsLabUnidad4.postman_environment.json"
+            execute ("newman run ./postman/LabDevops-v2.postman_collection.json -e ./postman/DevOpsLabUnidad4.postman_environment.json")
         }
     }
 
     stage('Test Selenium') {
         steps {
-            bat "mvn test -Dtest=SeleniumTST -DfailIfNoTests=false -e"
+            execute( "./mvnw test -Dtest=SeleniumTST -DfailIfNoTests=false -e")
         }
     }
 
@@ -54,4 +46,14 @@ pipeline {
     // }
  
   }
+}
+
+def execute(command){
+    if (isUnix()) {
+        sh command
+    }
+    else{
+        bat command
+    }
+
 }

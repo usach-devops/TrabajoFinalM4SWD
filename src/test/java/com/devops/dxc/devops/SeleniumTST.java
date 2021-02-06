@@ -15,6 +15,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.devops.dxc.selenium.UtilSelenium;
+import com.devops.dxc.selenium.UtilSelenium.OS;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Order;
@@ -41,18 +43,25 @@ public class SeleniumTST {
     static void setUp() {
         System.out.println("Iniciando configuración...");
 
-        switch (UtilSelenium.getOS()) {
+        OS os = UtilSelenium.getOS();
+
+        System.out.println(os);
+
+        switch (os) {
             case WINDOWS:
                 // do windows stuff
                 System.setProperty("webdriver.chrome.driver", "C:\\selenium\\drivers\\chromedriver.exe");
                 break;
-            default:
-                System.setProperty("webdriver.chrome.driver", "/opt/chromedriver");
+                default:
+                  System.setProperty("webdriver.chrome.driver","/opt/chromedriver");
                 break;
         }
 
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        
         driver = new ChromeDriver(options);
         driver.get("http://192.81.214.49/");
         driver.manage().window().maximize();
