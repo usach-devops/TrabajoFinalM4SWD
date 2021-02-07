@@ -67,7 +67,7 @@ public class Util {
         if (sueldo >= 4590000 && sueldo <6120000)
             retorno = (int)(0.304*dxc);
 
-        if (sueldo > 6120000 && sueldo < 15818000)
+        if (sueldo >= 6120000 && sueldo < 15818000)
             retorno =  (int)(0.35*dxc);
 
         if (sueldo >= 15818000)
