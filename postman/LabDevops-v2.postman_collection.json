@@ -1,0 +1,1434 @@
+{
+	"info": {
+		"_postman_id": "58c125c1-ea9c-476c-9f2c-4698fd14eb88",
+		"name": "LabDevops Unidad 4",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetUF",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var moment = require('moment');\r",
+							"fecha = moment().format((\"DD-MM-YYYY\"));\r",
+							"console.log (fecha);\r",
+							"pm.environment.set(\"_FECHAHOY\", fecha);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"bodyData = JSON.parse(responseBody)\r",
+							"uf_value = Math.round(pm.response.json().serie[0].valor,);\r",
+							"console.log(\"UF: \"+uf_value)\r",
+							"pm.environment.set(\"_UF\", uf_value);\r",
+							"\r",
+							"pm.test(\"Tiempo de respuesta es menor que 2000ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(2000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Respuesta estaria okay para procesar\", function () {\r",
+							"    pm.response.to.not.be.error;\r",
+							"    pm.response.to.not.have.jsonBody(\"error\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"La respuesta contiene string UF\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"UF\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de UF tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json().serie[0].valor\r",
+							"  pm.expect(responseJson).to.be.a(\"number\"); // valida si en el campo Valor de uf contiene un valor numerico\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://mindicador.cl/api/uf/{{_FECHAHOY}}",
+					"protocol": "https",
+					"host": [
+						"mindicador",
+						"cl"
+					],
+					"path": [
+						"api",
+						"uf",
+						"{{_FECHAHOY}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RetirarMaximoSaldo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Retira Maximo Saldo 150 UF\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.ahorro).to.eql(30000000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Saldo tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.saldo).to.be.a(\"number\"); // valida si en el campo Saldo contiene un valor numerico\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=30000000&sueldo=1000000",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "30000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "1000000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RetirarMinimoSaldo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Retira Minimo Saldo 35 UF\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.ahorro).to.eql(3000000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Saldo tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.saldo).to.be.a(\"number\"); // valida si en el campo Saldo contiene un valor numerico\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=3000000&sueldo=1000000",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "3000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "1000000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RetirarTodoAhorro",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Retira Total de Ahorros\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.ahorro).to.eql(500000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Saldo tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.saldo).to.be.a(\"number\"); // valida si en el campo Saldo contiene un valor numerico\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=500000&sueldo=1000000",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "500000"
+						},
+						{
+							"key": "sueldo",
+							"value": "1000000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PuedeRetirar150UF",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Puede Retirar 150UF\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.ahorro).to.eql(44000000);\r",
+							"  valor_uf =pm.environment.get(\"_UF\");\r",
+							"  pm.expect(responseJson.dxc).to.eql(150*valor_uf);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de DXC tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.dxc).to.be.a(\"number\"); // valida si en el campo Saldo contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=44000000&sueldo=1500000",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "44000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "1500000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No puede retirar 150 UF",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"No puede retirar 150 UF\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.ahorro).to.eql(900000);\r",
+							"  valor_uf =pm.environment.get(\"_UF\");\r",
+							"  //pm.expect(responseJson.dxc).to.eql(150*valor_uf);\r",
+							"  pm.expect(150*valor_uf).to.be.at.least(responseJson.dxc);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de DXC tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.dxc).to.be.a(\"number\"); // valida si en el campo Saldo contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=900000&sueldo=1000000",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "900000"
+						},
+						{
+							"key": "sueldo",
+							"value": "1000000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PuedeRetirar35UF",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Puede retirar 35 UF\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.ahorro).to.eql(900000);\r",
+							"  valor_uf =pm.environment.get(\"_UF\");\r",
+							"  pm.expect(35*valor_uf).to.be.at.least(responseJson.dxc);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de DXC tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.dxc).to.be.a(\"number\"); // valida si en el campo Saldo contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=900000&sueldo=1500000",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "900000"
+						},
+						{
+							"key": "sueldo",
+							"value": "1500000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Saldo en fondos Cero",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Saldo debe ser mayor a $0 \", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.saldo).to.eql(0);\r",
+							"  pm.expect(0).to.be.at.lessThan(1);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Saldo tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.saldo).to.be.a(\"number\"); //valida si en el campo Saldo contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=0&sueldo=1000000",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "0"
+						},
+						{
+							"key": "sueldo",
+							"value": "1000000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "No Paga Impuesto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"No paga Impuesto sueldo inferior a $1.500.000\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.impuesto).to.eql(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Impuesto tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.impuesto).to.be.a(\"number\"); //valida si en el campo impuesto contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=50000000&sueldo=1499999",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "50000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "1499999"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paga Impuesto factor 0.04",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Paga Impuesto sueldo mayor o igual a $1.500.000\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.impuesto).to.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Impuesto tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.impuesto).to.be.a(\"number\"); //valida si en el campo impuesto contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=5000000&sueldo=1500000",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "5000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "1500000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paga Impuesto factor 0.04",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Paga Impuesto sueldo mayor o igual a $1.500.000\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.impuesto).to.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Impuesto tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.impuesto).to.be.a(\"number\"); //valida si en el campo impuesto contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=50000000&sueldo=1529999",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "50000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "1529999"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paga Impuesto factor 0.08",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Paga Impuesto sueldo mayor o igual a $1.530.000\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.impuesto).to.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Impuesto tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.impuesto).to.be.a(\"number\"); //valida si en el campo impuesto contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=60000000&sueldo=1530000",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "60000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "1530000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paga Impuesto factor 0.08",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Paga Impuesto sueldo mayor o igual a $1.530.000\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.impuesto).to.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Impuesto tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.impuesto).to.be.a(\"number\"); //valida si en el campo impuesto contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=60000000&sueldo=2549999",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "60000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "2549999"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paga Impuesto factor 0.135",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Paga Impuesto sueldo mayor o igual a $2.550.000\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.impuesto).to.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Impuesto tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.impuesto).to.be.a(\"number\"); //valida si en el campo impuesto contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=60000000&sueldo=2550000",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "60000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "2550000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paga Impuesto factor 0.135",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Paga Impuesto sueldo mayor o igual a $2.550.000\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.impuesto).to.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Impuesto tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.impuesto).to.be.a(\"number\"); //valida si en el campo impuesto contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=60000000&sueldo=3569999",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "60000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "3569999"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paga Impuesto factor 0.23",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Paga Impuesto mayor a $0\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.impuesto).to.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Impuesto tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.impuesto).to.be.a(\"number\"); //valida si en el campo impuesto contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=60000000&sueldo=3570000",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "60000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "3570000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paga Impuesto factor 0.23",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Paga Impuesto mayor a $0\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.impuesto).to.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Impuesto tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.impuesto).to.be.a(\"number\"); //valida si en el campo impuesto contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=60000000&sueldo=4589999",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "60000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "4589999"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paga Impuesto factor 0.304",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Paga Impuesto mayor a $0\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.impuesto).to.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Impuesto tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.impuesto).to.be.a(\"number\"); //valida si en el campo impuesto contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=60000000&sueldo=4590000",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "60000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "4590000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paga Impuesto factor 0.304",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Paga Impuesto mayor a $0\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.impuesto).to.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Impuesto tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.impuesto).to.be.a(\"number\"); //valida si en el campo impuesto contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=60000000&sueldo=6119999",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "60000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "6119999"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paga Impuesto factor 0.35",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Paga Impuesto mayor a $0\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.impuesto).to.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Impuesto tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.impuesto).to.be.a(\"number\"); //valida si en el campo impuesto contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=60000000&sueldo=6120000",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "60000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "6120000"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paga Impuesto factor 0.35",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Paga Impuesto mayor a $0\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.impuesto).to.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Impuesto tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.impuesto).to.be.a(\"number\"); //valida si en el campo impuesto contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=60000000&sueldo=15817999",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "60000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "15817999"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Paga Impuesto factor 0.4",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Paga Impuesto mayor a $0\", () => {\r",
+							"  const responseJson = pm.response.json();\r",
+							"  pm.expect(responseJson.impuesto).to.greaterThan(0);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Codigo de estado 200\", () => {\r",
+							"  pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Carga util debe ser valida y tener cuerpo\", function () { \r",
+							"     pm.response.to.be.ok; // equivalente a decir validacion sea 200\r",
+							"     pm.response.to.be.withBody; // body tiene que existir\r",
+							"     pm.response.to.be.json; // además que sea un JSON válido\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valor de Impuesto tiene caracter numerico\", () => {\r",
+							"  const responseJson = pm.response.json()\r",
+							"  pm.expect(responseJson.impuesto).to.be.a(\"number\"); //valida si en el campo impuesto contiene un valor numerico\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:8085/rest/msdxc/dxc?ahorro=60000000&sueldo=15818001",
+					"protocol": "http",
+					"host": [
+						"192",
+						"81",
+						"214",
+						"49"
+					],
+					"port": "8085",
+					"path": [
+						"rest",
+						"msdxc",
+						"dxc"
+					],
+					"query": [
+						{
+							"key": "ahorro",
+							"value": "60000000"
+						},
+						{
+							"key": "sueldo",
+							"value": "15818001"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
