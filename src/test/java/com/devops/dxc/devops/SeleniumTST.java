@@ -84,13 +84,7 @@ public class SeleniumTST {
     @Order(2)
     @ParameterizedTest(name = "ahorro = {0} , sueldo {1}, retiro saldo ")
     @CsvSource({
-            /*
-             * " , ", "0, 0",
-             */
-            "900000, 1000000"/*
-                              * , "1100000, 1000000", "5000000, 1500000", "44000000, 1500000",
-                              * "50000000, 2500000"
-                              */
+            "900000, 1000000"
     })
     void RetirarSaldo(String ahorro, String sueldo) throws InterruptedException {
         System.out.println("Iniciando RetirarSaldo...");
@@ -110,9 +104,6 @@ public class SeleniumTST {
     @Order(3)
     @ParameterizedTest(name = "ahorro = {0} , sueldo {1}, retiro {2} UF ")
     @CsvSource({
-            /*
-             * " , , ", "0, 0, 0",
-             */
             "900000, 1000000, 150", "1100000, 1000000, 150", "5000000, 1500000, 150", "5000000, 1000000, 150" })
     void NoPuedeRetirar150UF(String ahorro, String sueldo, int retiroUF) throws InterruptedException {
         System.out.println("Iniciando NoPuedeRetirar150UF...");
@@ -136,9 +127,6 @@ public class SeleniumTST {
     @Order(4)
     @ParameterizedTest(name = "ahorro = {0} , sueldo {1}, retiro {2} UF ")
     @CsvSource({
-            /*
-             * " , , ", "0, 0, 0",
-             */
             "44000000, 1500000, 150", "50000000, 2500000, 150" })
     void PuedeRetirar150UF(String ahorro, String sueldo, int retiroUF) throws InterruptedException {
         System.out.println("Iniciando Pruebas...");
@@ -162,9 +150,6 @@ public class SeleniumTST {
     @Order(5)
     @ParameterizedTest(name = "ahorro = {0} , sueldo {1}, saldo cero ")
     @CsvSource({
-            /*
-             * " , ", "0, 0",
-             */
             "900000, 1000000" })
     void SaldoCero(String ahorro, String sueldo) throws InterruptedException {
         System.out.println("Iniciando SaldoCero...");
@@ -198,14 +183,9 @@ public class SeleniumTST {
         driver.findElement(By.id("btnSubmit")).click();
         Thread.sleep(2000);
 
-        // String sueldoResponse = driver.findElement(By.xpath("//input[@id='iSueldo']")).getAttribute("value");
-        // String ahorroResponse = driver.findElement(By.xpath("//input[@id='iAhorro']")).getAttribute("value");
-
         String saldoResponse = driver.findElement(By.xpath("//span[@id='saldo']")).getText();
 
         System.out.println("saldoResponse = " + saldoResponse);
-        // System.out.println("ahorro = " + ahorroResponse);
-        // System.out.println("sueldo = " + sueldoResponse);
 
         assertTrue("Error en Saldo " + saldoResponse, Integer.parseInt(saldoResponse) > 0);
     }
@@ -213,7 +193,6 @@ public class SeleniumTST {
     @Order(7)
     @ParameterizedTest(name = "ahorro = {0} , sueldo {1}, paga Impuesto ")
     @CsvSource({
-            /* " , ", */
             "0, 0", "900000, 1000000", "1100000, 1000000", "6000000, 2500000", "44000000, 1500000", "50000000, 2500000",
             "50000000, 1499999", "50000000, 1500000", "50000000, 1529999", "50000000, 1530000", "50000000, 1530001",
             "50000000, 2549999", "50000000, 2550000", "50000000, 2550001", "50000000, 3569999", "50000000, 3570000",
