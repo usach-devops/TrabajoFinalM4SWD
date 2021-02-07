@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 public class RestData {
 	
 	private final static Logger LOGGER = Logger.getLogger("devops.subnivel.Control");
-	@CrossOrigin(origins = "http://192.81.214.49")
+	@CrossOrigin(origins = "http://127.0.0.1")
 	@GetMapping(path = "/dxc", produces = MediaType.APPLICATION_JSON_VALUE)
 	public @ResponseBody Dxc getData(@RequestParam(name = "sueldo") String sueldo, @RequestParam(name = "ahorro") String ahorro){
 		

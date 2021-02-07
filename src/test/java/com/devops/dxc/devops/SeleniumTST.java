@@ -63,7 +63,7 @@ public class SeleniumTST {
         options.addArguments("--disable-dev-shm-usage");
         
         driver = new ChromeDriver(options);
-        driver.get("http://192.81.214.49/");
+        driver.get("http://127.0.0.1/");
         driver.manage().window().maximize();
         System.out.println(driver.getCurrentUrl());
         System.out.println(driver.getTitle());
