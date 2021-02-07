@@ -7,12 +7,12 @@
 - Junit
 - Selenium
 
+![alt text](/resources/pipeline.png)
+
 
 ## Pipeline:
 
  El pipeline es de tipo multibranch con ejecución del branch develop conectado a github.
-
- ![alt text](/resources/pipeline.png)
 
 ### Steps
 
