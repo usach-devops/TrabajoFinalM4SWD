@@ -1,14 +1,6 @@
 package com.devops.dxc.devops;
 
-// import static org.junit.Assert.assertEquals;
-// //import static org.junit.Assert.assertTrue;
 
-// import com.devops.dxc.selenium.UtilSelenium;
-
-// import org.springframework.boot.test.context.SpringBootTest;
-// import org.junit.Test;
-// import org.junit.Before;
-// import org.junit.After;
 
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
